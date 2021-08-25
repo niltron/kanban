@@ -2,6 +2,58 @@
 
 A comprehensive task board
 
+## tltr
+
+```
+docker-compose up
+npm i && npm run db:reset && npm run start:dev
+// Go to http://localhost:3000/graphql
+```
+
+## queries example
+
+```
+npm run start:dev
+
+# GET users
+query {
+  authors {
+    id
+    name
+  }
+}
+
+# GET all info for a user
+query {
+  author(id: "") { <<-- PUT one id from the previous list
+    id
+    name
+    boards {
+      id
+      name
+      members {
+        id
+        name
+        admin
+      }
+      columns {
+        name
+        status
+        tasks {
+          title
+          description
+          status
+          assigned {
+            name
+          }
+        }
+      }
+    }
+  }
+}
+
+```
+
 ## type first approach
 
 By default prisma register types under node_modules. To handle traceability print the model under the generate/index.ts file.
