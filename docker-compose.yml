@@ -1,0 +1,19 @@
+version: '3.3'
+services:
+  db:
+    image: percona
+    container_name: db
+    restart: always
+    environment:
+      MYSQL_USER: $MYSQL_USER
+      MYSQL_PASSWORD: $MYSQL_PASSWORD
+      MYSQL_DATABASE: $MYSQL_DATABASE
+      MYSQL_ROOT_PASSWORD: $MYSQL_ROOT_PASSWORD
+    ports:
+      - 3306:3306
+  adminer:
+    image: adminer
+    container_name: admin
+    restart: always
+    ports:
+      - 8080:8080

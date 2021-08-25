@@ -1,0 +1,74 @@
+generator nestgraphql {
+  provider   = "node node_modules/prisma-nestjs-graphql"
+  output     = "../src/common/generated"
+  emitSingle = "true"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id     String  @id @default(uuid())
+  email  String  @unique
+  name   String?
+  admin  Boolean
+  tasks  Task[]
+  boards Board[]
+
+  @@map("user")
+}
+
+model Board {
+  id      String      @id @default(uuid())
+  name    String
+  status  BoardStatus @default(WORKING)
+  members User[]
+  columns Column[]
+
+  @@map("board")
+}
+
+model Column {
+  id     String       @id @default(uuid())
+  name   String
+  status ColumnStatus @default(ACTIVE)
+  tasks  Task[]
+
+  board   Board  @relation(fields: [boardId], references: [id])
+  boardId String
+}
+
+model Task {
+  id          String     @id @default(uuid())
+  title       String     @default("New task")
+  description String     @default("")
+  ponctuation Int        @default(0)
+  status      TaskStatus @default(ACTIVE)
+
+  column   Column @relation(fields: [columnId], references: [id])
+  columnId String
+
+  assigned   User?   @relation(fields: [assignedId], references: [id])
+  assignedId String?
+}
+
+enum BoardStatus {
+  WORKING
+  COMPLETED
+}
+
+enum ColumnStatus {
+  ACTIVE
+  ARCHIVED
+}
+
+enum TaskStatus {
+  ACTIVE
+  ARCHIVED
+}

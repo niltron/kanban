@@ -1,0 +1,384 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type BoardCountAggregate {
+  id: Int!
+  name: Int!
+  status: Int!
+  _all: Int!
+}
+
+type BoardMaxAggregate {
+  id: String
+  name: String
+  status: BoardStatus
+}
+
+enum BoardStatus {
+  WORKING
+  COMPLETED
+}
+
+type BoardMinAggregate {
+  id: String
+  name: String
+  status: BoardStatus
+}
+
+type Board {
+  id: ID!
+  name: String!
+  status: BoardStatus!
+  members: [User!]
+  columns: [Column!]
+}
+
+type ColumnCountAggregate {
+  id: Int!
+  name: Int!
+  status: Int!
+  boardId: Int!
+  _all: Int!
+}
+
+type ColumnMaxAggregate {
+  id: String
+  name: String
+  status: ColumnStatus
+  boardId: String
+}
+
+enum ColumnStatus {
+  ACTIVE
+  ARCHIVED
+}
+
+type ColumnMinAggregate {
+  id: String
+  name: String
+  status: ColumnStatus
+  boardId: String
+}
+
+type Column {
+  id: ID!
+  name: String!
+  status: ColumnStatus!
+  tasks: [Task!]
+  board: Board!
+  boardId: String!
+}
+
+type TaskAvgAggregate {
+  ponctuation: Float
+}
+
+type TaskCountAggregate {
+  id: Int!
+  title: Int!
+  description: Int!
+  ponctuation: Int!
+  status: Int!
+  columnId: Int!
+  assignedId: Int!
+  _all: Int!
+}
+
+type TaskMaxAggregate {
+  id: String
+  title: String
+  description: String
+  ponctuation: Int
+  status: TaskStatus
+  columnId: String
+  assignedId: String
+}
+
+enum TaskStatus {
+  ACTIVE
+  ARCHIVED
+}
+
+type TaskMinAggregate {
+  id: String
+  title: String
+  description: String
+  ponctuation: Int
+  status: TaskStatus
+  columnId: String
+  assignedId: String
+}
+
+type TaskSumAggregate {
+  ponctuation: Int
+}
+
+type Task {
+  id: ID!
+  title: String!
+  description: String!
+  ponctuation: Int!
+  status: TaskStatus!
+  column: Column!
+  columnId: String!
+  assigned: User
+  assignedId: String
+}
+
+type UserCountAggregate {
+  id: Int!
+  email: Int!
+  name: Int!
+  admin: Int!
+  _all: Int!
+}
+
+type UserMaxAggregate {
+  id: String
+  email: String
+  name: String
+  admin: Boolean
+}
+
+type UserMinAggregate {
+  id: String
+  email: String
+  name: String
+  admin: Boolean
+}
+
+type User {
+  id: ID!
+  email: String!
+  name: String
+  admin: Boolean!
+  tasks: [Task!]
+  boards: [Board!]
+}
+
+type Query {
+  author(id: String!): User
+  authors: [User!]
+}
+
+type Mutation {
+  addBoard(board: BoardCreateInput!): Board!
+}
+
+input BoardCreateInput {
+  id: String
+  name: String!
+  status: BoardStatus
+  members: UserCreateNestedManyWithoutBoardsInput
+  columns: ColumnCreateNestedManyWithoutBoardInput
+}
+
+input UserCreateNestedManyWithoutBoardsInput {
+  create: [UserCreateWithoutBoardsInput!]
+  connectOrCreate: [UserCreateOrConnectWithoutBoardsInput!]
+  connect: [UserWhereUniqueInput!]
+}
+
+input UserCreateWithoutBoardsInput {
+  id: String
+  email: String!
+  name: String
+  admin: Boolean!
+  tasks: TaskCreateNestedManyWithoutAssignedInput
+}
+
+input TaskCreateNestedManyWithoutAssignedInput {
+  create: [TaskCreateWithoutAssignedInput!]
+  connectOrCreate: [TaskCreateOrConnectWithoutAssignedInput!]
+  createMany: TaskCreateManyAssignedInputEnvelope
+  connect: [TaskWhereUniqueInput!]
+}
+
+input TaskCreateWithoutAssignedInput {
+  id: String
+  title: String
+  description: String
+  ponctuation: Int
+  status: TaskStatus
+  column: ColumnCreateNestedOneWithoutTasksInput!
+}
+
+input ColumnCreateNestedOneWithoutTasksInput {
+  create: ColumnCreateWithoutTasksInput
+  connectOrCreate: ColumnCreateOrConnectWithoutTasksInput
+  connect: ColumnWhereUniqueInput
+}
+
+input ColumnCreateWithoutTasksInput {
+  id: String
+  name: String!
+  status: ColumnStatus
+  board: BoardCreateNestedOneWithoutColumnsInput!
+}
+
+input BoardCreateNestedOneWithoutColumnsInput {
+  create: BoardCreateWithoutColumnsInput
+  connectOrCreate: BoardCreateOrConnectWithoutColumnsInput
+  connect: BoardWhereUniqueInput
+}
+
+input BoardCreateWithoutColumnsInput {
+  id: String
+  name: String!
+  status: BoardStatus
+  members: UserCreateNestedManyWithoutBoardsInput
+}
+
+input BoardCreateOrConnectWithoutColumnsInput {
+  where: BoardWhereUniqueInput!
+  create: BoardCreateWithoutColumnsInput!
+}
+
+input BoardWhereUniqueInput {
+  id: String
+}
+
+input ColumnCreateOrConnectWithoutTasksInput {
+  where: ColumnWhereUniqueInput!
+  create: ColumnCreateWithoutTasksInput!
+}
+
+input ColumnWhereUniqueInput {
+  id: String
+}
+
+input TaskCreateOrConnectWithoutAssignedInput {
+  where: TaskWhereUniqueInput!
+  create: TaskCreateWithoutAssignedInput!
+}
+
+input TaskWhereUniqueInput {
+  id: String
+}
+
+input TaskCreateManyAssignedInputEnvelope {
+  data: [TaskCreateManyAssignedInput!]!
+  skipDuplicates: Boolean
+}
+
+input TaskCreateManyAssignedInput {
+  id: String
+  title: String
+  description: String
+  ponctuation: Int
+  status: TaskStatus
+  columnId: String!
+}
+
+input UserCreateOrConnectWithoutBoardsInput {
+  where: UserWhereUniqueInput!
+  create: UserCreateWithoutBoardsInput!
+}
+
+input UserWhereUniqueInput {
+  id: String
+  email: String
+}
+
+input ColumnCreateNestedManyWithoutBoardInput {
+  create: [ColumnCreateWithoutBoardInput!]
+  connectOrCreate: [ColumnCreateOrConnectWithoutBoardInput!]
+  createMany: ColumnCreateManyBoardInputEnvelope
+  connect: [ColumnWhereUniqueInput!]
+}
+
+input ColumnCreateWithoutBoardInput {
+  id: String
+  name: String!
+  status: ColumnStatus
+  tasks: TaskCreateNestedManyWithoutColumnInput
+}
+
+input TaskCreateNestedManyWithoutColumnInput {
+  create: [TaskCreateWithoutColumnInput!]
+  connectOrCreate: [TaskCreateOrConnectWithoutColumnInput!]
+  createMany: TaskCreateManyColumnInputEnvelope
+  connect: [TaskWhereUniqueInput!]
+}
+
+input TaskCreateWithoutColumnInput {
+  id: String
+  title: String
+  description: String
+  ponctuation: Int
+  status: TaskStatus
+  assigned: UserCreateNestedOneWithoutTasksInput
+}
+
+input UserCreateNestedOneWithoutTasksInput {
+  create: UserCreateWithoutTasksInput
+  connectOrCreate: UserCreateOrConnectWithoutTasksInput
+  connect: UserWhereUniqueInput
+}
+
+input UserCreateWithoutTasksInput {
+  id: String
+  email: String!
+  name: String
+  admin: Boolean!
+  boards: BoardCreateNestedManyWithoutMembersInput
+}
+
+input BoardCreateNestedManyWithoutMembersInput {
+  create: [BoardCreateWithoutMembersInput!]
+  connectOrCreate: [BoardCreateOrConnectWithoutMembersInput!]
+  connect: [BoardWhereUniqueInput!]
+}
+
+input BoardCreateWithoutMembersInput {
+  id: String
+  name: String!
+  status: BoardStatus
+  columns: ColumnCreateNestedManyWithoutBoardInput
+}
+
+input BoardCreateOrConnectWithoutMembersInput {
+  where: BoardWhereUniqueInput!
+  create: BoardCreateWithoutMembersInput!
+}
+
+input UserCreateOrConnectWithoutTasksInput {
+  where: UserWhereUniqueInput!
+  create: UserCreateWithoutTasksInput!
+}
+
+input TaskCreateOrConnectWithoutColumnInput {
+  where: TaskWhereUniqueInput!
+  create: TaskCreateWithoutColumnInput!
+}
+
+input TaskCreateManyColumnInputEnvelope {
+  data: [TaskCreateManyColumnInput!]!
+  skipDuplicates: Boolean
+}
+
+input TaskCreateManyColumnInput {
+  id: String
+  title: String
+  description: String
+  ponctuation: Int
+  status: TaskStatus
+  assignedId: String
+}
+
+input ColumnCreateOrConnectWithoutBoardInput {
+  where: ColumnWhereUniqueInput!
+  create: ColumnCreateWithoutBoardInput!
+}
+
+input ColumnCreateManyBoardInputEnvelope {
+  data: [ColumnCreateManyBoardInput!]!
+  skipDuplicates: Boolean
+}
+
+input ColumnCreateManyBoardInput {
+  id: String
+  name: String!
+  status: ColumnStatus
+}
