@@ -2,7 +2,7 @@
 
 A comprehensive task board
 
-## tltr
+## tl;dr
 
 ```
 docker-compose up
