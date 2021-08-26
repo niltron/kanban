@@ -1,7 +1,6 @@
 import { ForbiddenError } from 'apollo-server';
 import { ServerResponse } from 'http';
 import { IncomingMessage } from 'http';
-import { prisma } from './database.prisma';
 import { ContextKanban } from '../graph/graph.interface';
 
 interface CtxData {
@@ -48,7 +47,6 @@ export const context = async (data: CtxData & WSNnextData) => {
   }
 
   return {
-    prisma,
     decoded,
     operationName,
   };

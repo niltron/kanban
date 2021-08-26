@@ -33,7 +33,7 @@ describe('AuthorsResolver', () => {
   });
 
   describe('authors', () => {
-    it('should return the author details', async () => {
+    it('should return all the authors', async () => {
       resolver.prisma.client.user.findFirst = jest.fn(() =>
         Promise.resolve([
           {
@@ -50,7 +50,7 @@ describe('AuthorsResolver', () => {
   });
 
   describe('addBoard', () => {
-    it('should return the author details', async () => {
+    it('should create a new board', async () => {
       resolver.prisma.client.board.create = jest.fn(() =>
         Promise.resolve({}),
       ) as any;
