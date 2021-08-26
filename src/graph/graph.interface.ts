@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import { auth } from 'firebase-admin';
 
-export interface ContextKanban {
+export interface KanbanContext {
   prisma: PrismaClient;
   decoded: auth.DecodedIdToken;
 }
@@ -14,7 +14,7 @@ export interface IDefinition {
   resolverFn: (
     parent: any,
     args: any,
-    context: ContextKanban,
+    context: KanbanContext,
     info?: any,
   ) => Promise<any[]>;
 }

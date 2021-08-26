@@ -54,6 +54,18 @@ query {
 
 ```
 
+## recommended env vars
+```
+MYSQL_ROOT_PASSWORD=
+MYSQL_USER=
+MYSQL_PASSWORD=
+MYSQL_DATABASE=
+DATABASE_URL=mysql://user:pwd@127.0.0.1:3306/kanban
+FIREBASE_PROJECT_ID=
+FIREBASE_DATABASE_URL=https://{{site}}.firebaseio.com
+KANBAN_DOMAIN=
+```
+
 ## type first approach
 
 By default prisma register types under node_modules. To handle traceability print the model under the generate/index.ts file.

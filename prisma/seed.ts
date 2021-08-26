@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import { v4 } from 'uuid';
 
+const { KANBAN_DOMAIN } = process.env;
 const prisma = new PrismaClient();
 const indentify = () => v4().replace(/-/g, '');
 
@@ -8,12 +9,12 @@ async function seed() {
   const FIXED_BOARD = '27c907e679304b5bb88b27c0c0c5c2b1';
   const FIXED_ADMIN = 'f2abe20bdef04e42b85d07af2c81c301';
   const admin = prisma.user.upsert({
-    where: { email: 'admin@wrine.co' },
+    where: { email: `admin@${KANBAN_DOMAIN}` },
     update: {},
     create: {
       id: FIXED_ADMIN,
       name: 'Admin',
-      email: 'admin@wrine.co',
+      email: `admin@${KANBAN_DOMAIN}`,
       admin: true,
     },
   });
@@ -29,13 +30,13 @@ async function seed() {
           {
             id: indentify(),
             name: 'Member Alice',
-            email: 'alice@wrine.co',
+            email: `alice@${KANBAN_DOMAIN}`,
             admin: false,
           },
           {
             id: indentify(),
             name: 'Member Bob',
-            email: 'bob@wrine.co',
+            email: `bob@${KANBAN_DOMAIN}`,
             admin: false,
           },
         ],

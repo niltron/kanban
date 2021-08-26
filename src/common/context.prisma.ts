@@ -1,7 +1,8 @@
 import { ForbiddenError } from 'apollo-server';
 import { ServerResponse } from 'http';
 import { IncomingMessage } from 'http';
-import { ContextKanban } from '../graph/graph.interface';
+import { KanbanContext } from '../graph/graph.interface';
+import { verify } from './auth.utils';
 
 interface CtxData {
   req: IncomingMessage & { ip?: string; body?: { operationName: string } };
@@ -10,7 +11,7 @@ interface CtxData {
 
 interface WSNnextData {
   connection: {
-    context: ContextKanban;
+    context: KanbanContext;
   };
   payload: {
     operationName: string;
@@ -23,20 +24,19 @@ export const context = async (data: CtxData & WSNnextData) => {
   }
 
   const {
-    ip,
     body: { operationName },
-    headers,
+    headers: { authorization },
   } = data?.req;
 
   if (operationName === 'IntrospectionQuery') {
     return null;
   }
 
-  if (!headers.authorization) {
+  if (!authorization) {
     throw new ForbiddenError('Not authorized');
   }
 
-  const decoded = await verify(headers.authorization);
+  const decoded = await verify(authorization);
 
   if (!decoded) {
     return null;
@@ -51,8 +51,3 @@ export const context = async (data: CtxData & WSNnextData) => {
     operationName,
   };
 };
-
-// TODO: review
-function verify(authorization: string): any {
-  throw new Error('Function not implemented.');
-}

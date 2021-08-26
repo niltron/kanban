@@ -1,7 +1,7 @@
 import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { PrismaService } from 'src/common/prisma.service';
 import { Board, BoardCreateInput, User } from 'src/common/generated';
-import { ContextKanban } from './graph.interface';
+import { KanbanContext } from './graph.interface';
 
 @Resolver(() => User)
 export class AuthorsResolver {
@@ -36,7 +36,7 @@ export class AuthorsResolver {
 
   @Mutation(() => Board)
   addBoard(
-    @Context() ctx: ContextKanban,
+    @Context() ctx: KanbanContext,
     @Args('board', { type: () => BoardCreateInput }) board: Board,
   ) {
     // members: [ctx.decoded.sub] TODO Add admin as member if flag found
