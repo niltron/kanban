@@ -35,13 +35,14 @@ model Board {
 }
 
 model Column {
-  id     String       @id @default(uuid())
-  name   String
-  status ColumnStatus @default(ACTIVE)
-  tasks  Task[]
-
-  board   Board  @relation(fields: [boardId], references: [id])
+  id      String       @id @default(uuid())
+  name    String
+  status  ColumnStatus @default(ACTIVE)
+  tasks   Task[]
+  board   Board        @relation(fields: [boardId], references: [id])
   boardId String
+
+  @@map("column")
 }
 
 model Task {
@@ -50,12 +51,12 @@ model Task {
   description String     @default("")
   ponctuation Int        @default(0)
   status      TaskStatus @default(ACTIVE)
+  column      Column     @relation(fields: [columnId], references: [id])
+  columnId    String
+  assigned    User?      @relation(fields: [assignedId], references: [id])
+  assignedId  String?
 
-  column   Column @relation(fields: [columnId], references: [id])
-  columnId String
-
-  assigned   User?   @relation(fields: [assignedId], references: [id])
-  assignedId String?
+  @@map("task")
 }
 
 enum BoardStatus {
