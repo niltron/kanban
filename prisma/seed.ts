@@ -1,9 +1,12 @@
 import { PrismaClient } from '@prisma/client';
+import { assert } from 'console';
 import { v4 } from 'uuid';
 
 const { KANBAN_DOMAIN } = process.env;
 const prisma = new PrismaClient();
 const indentify = () => v4().replace(/-/g, '');
+
+assert(!!KANBAN_DOMAIN, 'KANBAN_DOMAIN is not defined in .env');
 
 async function seed() {
   const FIXED_BOARD = '27c907e679304b5bb88b27c0c0c5c2b1';

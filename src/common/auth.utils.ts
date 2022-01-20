@@ -1,11 +1,9 @@
 import { ForbiddenError } from 'apollo-server-errors';
 import { initializeApp, credential, auth } from 'firebase-admin';
 
-const { FIREBASE_PROJECT_ID, FIREBASE_DATABASE_URL, KANBAN_DOMAIN } =
-  process.env;
+const { FIREBASE_DATABASE_URL, KANBAN_DOMAIN } = process.env;
 
 initializeApp({
-  projectId: FIREBASE_PROJECT_ID,
   credential: credential.applicationDefault(),
   databaseURL: FIREBASE_DATABASE_URL,
 });
