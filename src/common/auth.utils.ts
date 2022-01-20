@@ -1,14 +1,11 @@
 import { ForbiddenError } from 'apollo-server-errors';
-import { initializeApp, credential, auth } from 'firebase-admin';
+import { initializeApp } from 'firebase-admin/app';
+import { auth } from 'firebase-admin';
+import { DecodedIdToken } from 'firebase-admin/lib/auth/token-verifier';
 
-const { FIREBASE_DATABASE_URL, KANBAN_DOMAIN } = process.env;
+initializeApp();
 
-initializeApp({
-  credential: credential.applicationDefault(),
-  databaseURL: FIREBASE_DATABASE_URL,
-});
-
-export const verify = (token: string): Promise<auth.DecodedIdToken> => {
+export const verify = (token: string): Promise<DecodedIdToken> => {
   try {
     return auth().verifyIdToken(token.replace('Bearer ', ''));
   } catch (error) {
@@ -16,10 +13,10 @@ export const verify = (token: string): Promise<auth.DecodedIdToken> => {
   }
 };
 
-export const findTokenEmail = ({ email, sub }: auth.DecodedIdToken) => {
-  return email || `anonymous+${sub}@${KANBAN_DOMAIN}`;
+export const findTokenEmail = ({ email, sub }: DecodedIdToken) => {
+  return email || `anonymous+${sub}@${process.env.KANBAN_DOMAIN}`;
 };
 
-export const isAnonymous = (decoded: auth.DecodedIdToken) => {
+export const isAnonymous = (decoded: DecodedIdToken) => {
   return decoded.firebase.sign_in_provider !== 'anonymous';
 };

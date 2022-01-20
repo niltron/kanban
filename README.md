@@ -92,3 +92,11 @@ Drop, migrate, update definitions and execute the seeds with a single command
 ```
 npm run db:reset
 ```
+
+### firebase link
+Enable firebase auth
+```
+npm install -g firebase-tools
+firebase login
+firebase init
+```
